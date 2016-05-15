@@ -10,6 +10,12 @@ class Customer:
         self.accounts.append(account)
         return self
 
+	# Transfer amount from account1 to account2, by liwenguo123
+	def transferBetweenAccounts(self, amount, account1, account2): 
+		self.accounts1.withdraw(account)
+		self.accounts2.deposit(account)		
+		return self 
+
     def numAccs(self):
         return len(self.accounts)
 
