@@ -5,34 +5,55 @@ from bank import Bank
 from customer import Customer
 
 
-def test_customer_summary():
-    bank = Bank()
-    john = Customer("John").openAccount(Account(CHECKING))
-    bank.addCustomer(john)
-    assert_equals(bank.customerSummary(),
-                  "Customer Summary\n - John (1 account)")
+def test_customer_summary(name, accountNo， accountType): 
+	bank = Bank() 
+	numAcc = len(accountNo)
+	for anum, atype in zip(accountNo, accountType):
+		customer = Customer(name).openAccount(Account(anum, atype)) 
+	bank.addCustomer(customer) 
+	assert_equals(bank.customerSummary(), "Customer Summary\n - %s (%d (account if (numAcc == 1) else accounts)" %(name, numAcc)) 
 
+def test_customer_summary_call():
+	names = ["John", "John", "Jone", "Jone", None]
+	accNos = [1234, 1235, 1236， 1237, None]
+	accTypes = [CHECKING, SAVINGS, MAXI_SAVINGS, 10， None]
+	
+	for name, anum, atype in zip(names, accNos, accTypes):
+		test_customer_summary(name, anum, atype)
 
-def test_checking_account():
-    bank = Bank()
-    checkingAccount = Account(CHECKING)
-    bill = Customer("Bill").openAccount(checkingAccount)
-    bank.addCustomer(bill)
-    checkingAccount.deposit(100.0)
-    assert_equals(bank.totalInterestPaid(), 0.1)
+	name = "john"
+	del accNos[:]
+	accNos.append(123)
+	accNos.append(456)
+	del accTypes[:]
+	accTypes.append(CHECKING)
+	accTypes.append(SAVINGS)
+	test_customer_summary(name, accNos, accTypes)
+	
+def test_account(name, account, depositAmounts, withdrawAmounts): 
+	bank = Bank() 
+	customer = Customer(name).openAccount(account) 
+	bank.addCustomer(customer)
+	for damount in depositAmounts:
+		account.deposit(damount) 
+	for wamount in withdrawAmounts:
+		account.deposit(damount)
+	interest = 0;
+	if account.accountType == CHECKING
+		interest = 0.1
+	elif account.accountType == SAVINGS
+		interest = 0.1
+	elif account.accountType == MAXI_SAVINGS
+		interest = 0.5
+	assert_equals(bank.totalInterestPaid(), interest) 
 
-
-def test_savings_account():
-    bank = Bank()
-    checkingAccount = Account(SAVINGS)
-    bank.addCustomer(Customer("Bill").openAccount(checkingAccount))
-    checkingAccount.deposit(1500.0)
-    assert_equals(bank.totalInterestPaid(), 2.0)
-
-
-def test_maxi_savings_account():
-    bank = Bank()
-    checkingAccount = Account(MAXI_SAVINGS)
-    bank.addCustomer(Customer("Bill").openAccount(checkingAccount))
-    checkingAccount.deposit(3000.0)
-    assert_equals(bank.totalInterestPaid(), 170.0)
+def test_account_call(): 
+	names = "John"
+	anum = 12345
+	atypes = [CHECKING, SAVINGS, MAXI_SAVINGS, 10， None]
+	damount = [100, 0, -30, 100]
+	wamount = [50, 0, -20, 1000]
+	for atype in atypes):
+		account = Account(anum, atype)
+		test_account(name, account, damount, wamount)
+		
